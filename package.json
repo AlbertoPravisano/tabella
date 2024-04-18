@@ -1,6 +1,7 @@
 {
   "name": "tabella",
   "version": "0.1.0",
+  "homepage": "https://albertoPravisano.github.io/tabella",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
@@ -11,11 +12,17 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "gh-pages": "^6.1.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -34,8 +41,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
