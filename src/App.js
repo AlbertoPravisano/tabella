@@ -2,22 +2,27 @@ import { useState } from "react";
 import {
   DownloadOutlined,
   MailOutlined,
-  MinusOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, ColorPicker, Input, InputNumber } from "antd";
-import { Container, Divider, Header, Table } from "semantic-ui-react";
+import { Button } from "antd";
+import { Container, Divider, Header } from "semantic-ui-react";
+import TabellaOrdini from "./TabellaOrdini";
 
-const EMPTY_ROW = {
+const generateNewRow = (
+  key = 1,
+  intColor = "#FFFFFF",
+  extColor = "#000000"
+) => ({
+  key,
   name: "",
-  intColor: "#FFFFFF",
-  extColor: "#000000",
+  intColor,
+  extColor,
   quantity: 1,
   note: "",
-};
+});
 
 const App = () => {
-  const [dataSource, setDataSource] = useState([EMPTY_ROW]);
+  const [dataSource, setDataSource] = useState([generateNewRow()]);
 
   const onExport = () => {
     const values = dataSource.map(
@@ -42,7 +47,14 @@ const App = () => {
   const onSendMail = () => console.log("Invia via email");
 
   const onAddRow = () => {
-    setDataSource([...dataSource, EMPTY_ROW]);
+    setDataSource([
+      ...dataSource,
+      generateNewRow(
+        dataSource.length + 1,
+        dataSource[0].intColor,
+        dataSource[0].extColor
+      ),
+    ]);
   };
 
   const onRemoveRow = (index) => {
@@ -59,32 +71,11 @@ const App = () => {
     <Container>
       <Divider horizontal />
       <Header as="h1">Ordine cliente</Header>
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Articolo</Table.HeaderCell>
-            <Table.HeaderCell>Colore interno</Table.HeaderCell>
-            <Table.HeaderCell>Colore esterno</Table.HeaderCell>
-            <Table.HeaderCell>Quantità</Table.HeaderCell>
-            <Table.HeaderCell>Note</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {dataSource.map((row, index) => (
-            <TabellaRow
-              key={index}
-              row={row}
-              disabled={dataSource.length === 1}
-              onRemoveRow={() => onRemoveRow(index)}
-              onChangeValueRow={(key, value) =>
-                onChangeValueRow(index, key, value)
-              }
-            />
-          ))}
-        </Table.Body>
-      </Table>
+      <TabellaOrdini
+        dataSource={dataSource}
+        onRemoveRow={onRemoveRow}
+        onChangeValueRow={onChangeValueRow}
+      />
 
       <Button
         icon={<PlusOutlined />}
@@ -117,51 +108,3 @@ const App = () => {
 };
 
 export default App;
-
-const TabellaRow = ({ row, disabled, onChangeValueRow, onRemoveRow }) => {
-  return (
-    <Table.Row>
-      <Table.Cell width="6">
-        <Input
-          value={row.name}
-          onChange={(e) => onChangeValueRow("name", e.target.value)}
-        />
-      </Table.Cell>
-      <Table.Cell width="1">
-        <ColorPicker
-          value={row.intColor}
-          showText
-          onChange={(_, value) => onChangeValueRow("intColor", value)}
-        />
-      </Table.Cell>
-      <Table.Cell width="1">
-        <ColorPicker
-          value={row.extColor}
-          showText
-          onChange={(_, value) => onChangeValueRow("extColor", value)}
-        />
-      </Table.Cell>
-      <Table.Cell width="1">
-        <InputNumber
-          value={row.quantity}
-          onChange={(value) => onChangeValueRow("quantity", value)}
-        />
-      </Table.Cell>
-      <Table.Cell width="6">
-        <Input
-          value={row.note}
-          onChange={(e) => onChangeValueRow("note", e.target.value)}
-        />
-      </Table.Cell>
-      <Table.Cell width="1">
-        <Button
-          icon={<MinusOutlined />}
-          shape="circle"
-          data-tooltip={disabled ? undefined : "Rimuovi"}
-          disabled={disabled}
-          onClick={onRemoveRow}
-        ></Button>
-      </Table.Cell>
-    </Table.Row>
-  );
-};
