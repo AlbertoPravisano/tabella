@@ -4,7 +4,7 @@ import { Table } from "semantic-ui-react";
 
 const TabellaOrdini = ({ dataSource, onRemoveRow, onChangeValueRow }) => {
   return (
-    <Table celled>
+    <Table celled unstackable>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Cliente</Table.HeaderCell>
