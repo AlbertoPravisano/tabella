@@ -5,38 +5,34 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
-import { Container, Divider, Header } from "semantic-ui-react";
+import { Container, Divider, Button as UiButton } from "semantic-ui-react";
 import TabellaOrdini from "./TabellaOrdini";
 
-const generateNewRow = (
-  key = 1,
-  intColor = "#FFFFFF",
-  extColor = "#000000"
-) => ({
+const generateNewRow = (key = 1, color = "") => ({
   key,
   name: "",
-  intColor,
-  extColor,
+  email: "",
+  color,
+  code: "",
   quantity: 1,
   note: "",
 });
 
 const App = () => {
   const [dataSource, setDataSource] = useState([generateNewRow()]);
+  const [isPreventivo, setIsPreventivo] = useState(false);
 
   const onExport = () => {
     const values = dataSource.map(
       (obj) =>
-        [
-          obj.name,
-          `"${obj.intColor}"`,
-          `"${obj.extColor}"`,
-          obj.quantity,
-          obj.note,
-        ].join(";") + "\n"
+        [obj.name, `"${obj.color}"`, obj.code, obj.quantity, obj.note].join(
+          ";"
+        ) +
+        (isPreventivo ? ";SI" : ";NO") +
+        "\n"
     );
     const encodedUri = encodeURI(
-      "data:text/csv;charset=utf-8,Nome;Colore_interno;Colore_esterno;Quantita;Note\n" +
+      "data:text/csv;charset=utf-8,Cliente;Colore;Codice_articolo;Quantita;Note;Preventivo\n" +
         values
     );
 
@@ -49,11 +45,7 @@ const App = () => {
   const onAddRow = () => {
     setDataSource([
       ...dataSource,
-      generateNewRow(
-        dataSource.length + 1,
-        dataSource[0].intColor,
-        dataSource[0].extColor
-      ),
+      generateNewRow(dataSource.length + 1, dataSource[0].color),
     ]);
   };
 
@@ -70,7 +62,18 @@ const App = () => {
   return (
     <Container>
       <Divider horizontal />
-      <Header as="h1">Ordine cliente</Header>
+      <UiButton.Group fluid>
+        <UiButton
+          positive={!isPreventivo}
+          onClick={() => setIsPreventivo(false)}
+        >
+          Ordine
+        </UiButton>
+        <UiButton.Or text="o" />
+        <UiButton positive={isPreventivo} onClick={() => setIsPreventivo(true)}>
+          Preventivo
+        </UiButton>
+      </UiButton.Group>
       <TabellaOrdini
         dataSource={dataSource}
         onRemoveRow={onRemoveRow}

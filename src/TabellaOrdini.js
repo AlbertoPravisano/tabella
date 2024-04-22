@@ -1,5 +1,5 @@
 import { MinusOutlined } from "@ant-design/icons";
-import { Button, ColorPicker, Input, InputNumber } from "antd";
+import { Button, Input, InputNumber } from "antd";
 import { Table } from "semantic-ui-react";
 
 const TabellaOrdini = ({ dataSource, onRemoveRow, onChangeValueRow }) => {
@@ -7,9 +7,10 @@ const TabellaOrdini = ({ dataSource, onRemoveRow, onChangeValueRow }) => {
     <Table celled>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>Articolo</Table.HeaderCell>
-          <Table.HeaderCell>Colore interno</Table.HeaderCell>
-          <Table.HeaderCell>Colore esterno</Table.HeaderCell>
+          <Table.HeaderCell>Cliente</Table.HeaderCell>
+          <Table.HeaderCell>Email</Table.HeaderCell>
+          <Table.HeaderCell>Colore</Table.HeaderCell>
+          <Table.HeaderCell>Codice art.</Table.HeaderCell>
           <Table.HeaderCell>Quantità</Table.HeaderCell>
           <Table.HeaderCell>Note</Table.HeaderCell>
           <Table.HeaderCell></Table.HeaderCell>
@@ -37,25 +38,31 @@ export default TabellaOrdini;
 
 const TabellaRow = ({ row, disabled, onChangeValueRow, onRemoveRow }) => (
   <Table.Row>
-    <Table.Cell width="6">
+    <Table.Cell width="2">
       <Input
         value={row.name}
-        placeholder="Nome articolo..."
+        placeholder="Mario Rossi"
         onChange={(e) => onChangeValueRow("name", e.target.value)}
       />
     </Table.Cell>
-    <Table.Cell width="1">
-      <ColorPicker
-        value={row.intColor}
-        showText
-        onChange={(_, value) => onChangeValueRow("intColor", value)}
+    <Table.Cell width="4">
+      <Input
+        value={row.email}
+        placeholder="mariorossi@gmail.com"
+        onChange={(e) => onChangeValueRow("email", e.target.value)}
       />
     </Table.Cell>
-    <Table.Cell width="1">
-      <ColorPicker
-        value={row.extColor}
-        showText
-        onChange={(_, value) => onChangeValueRow("extColor", value)}
+    <Table.Cell width="2">
+      <Input
+        value={row.color}
+        placeholder="#FFFFFF"
+        onChange={(e) => onChangeValueRow("color", e.target.value)}
+      />
+    </Table.Cell>
+    <Table.Cell width="2">
+      <Input
+        value={row.code}
+        onChange={(e) => onChangeValueRow("code", e.target.value)}
       />
     </Table.Cell>
     <Table.Cell width="1">
