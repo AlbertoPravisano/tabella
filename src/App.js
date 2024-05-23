@@ -36,16 +36,14 @@ const App = () => {
   const [isPreventivo, setIsPreventivo] = useState(false);
 
   const onExport = () => {
-    const order =
-      `${dataSource.name};` +
-      dataSource.orders.map(
-        (obj) =>
-          [obj.product, obj.color, obj.code, obj.quantity, obj.note].join(";") +
-          (isPreventivo ? ";SI" : ";NO") +
-          "\n"
-      );
+    const order = dataSource.orders.map(
+      (obj) =>
+        [obj.product, obj.color, obj.code, obj.quantity, obj.note].join(";") +
+        (isPreventivo ? ";SI" : ";NO") +
+        "\n"
+    );
     const encodedUri = encodeURI(
-      "data:text/csv;charset=utf-8,Cliente;Prodotto;Colore;Codice_articolo;Quantita;Note;Preventivo\n" +
+      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore;Codice_articolo;Quantita;Note;Preventivo\n` +
         order
     );
 
