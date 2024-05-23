@@ -10,7 +10,6 @@ import {
   Divider,
   Header,
   Icon,
-  Button as UiButton,
   Form,
   Input,
 } from "semantic-ui-react";
@@ -33,17 +32,15 @@ const INITIAL_STATE = {
 
 const App = () => {
   const [dataSource, setDataSource] = useState(INITIAL_STATE);
-  const [isPreventivo, setIsPreventivo] = useState(false);
 
   const onExport = () => {
     const order = dataSource.orders.map(
       (obj) =>
         [obj.product, obj.color, obj.code, obj.quantity, obj.note].join(";") +
-        (isPreventivo ? ";SI" : ";NO") +
         "\n"
     );
     const encodedUri = encodeURI(
-      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore;Codice_articolo;Quantita;Note;Preventivo\n` +
+      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore;Codice_articolo;Quantita;Note\n` +
         order
     );
 
@@ -86,18 +83,6 @@ const App = () => {
   return (
     <Container>
       <Divider horizontal />
-      <UiButton.Group fluid>
-        <UiButton
-          positive={!isPreventivo}
-          onClick={() => setIsPreventivo(false)}
-        >
-          Ordine
-        </UiButton>
-        <UiButton.Or text="o" />
-        <UiButton positive={isPreventivo} onClick={() => setIsPreventivo(true)}>
-          Preventivo
-        </UiButton>
-      </UiButton.Group>
 
       <Divider horizontal>
         <Header as="h4">
@@ -182,6 +167,7 @@ const App = () => {
       >
         Invia via email
       </Button>
+      <Divider horizontal />
     </Container>
   );
 };
