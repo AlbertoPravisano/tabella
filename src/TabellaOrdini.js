@@ -8,8 +8,8 @@ const TabellaOrdini = ({ ordini, onRemoveRow, onChangeValueRow }) => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Articolo</Table.HeaderCell>
-          <Table.HeaderCell>Colore</Table.HeaderCell>
-          <Table.HeaderCell>Codice</Table.HeaderCell>
+          <Table.HeaderCell>Colore int.</Table.HeaderCell>
+          <Table.HeaderCell>Colore est.</Table.HeaderCell>
           <Table.HeaderCell>Quantità</Table.HeaderCell>
           <Table.HeaderCell>Note</Table.HeaderCell>
           <Table.HeaderCell></Table.HeaderCell>
@@ -46,15 +46,16 @@ const TabellaRow = ({ ordine, disabled, onChangeValueRow, onRemoveRow }) => (
     </Table.Cell>
     <Table.Cell width="2">
       <Input
-        value={ordine.color}
+        value={ordine.colorInt}
         placeholder="#FFFFFF"
-        onChange={(e) => onChangeValueRow("color", e.target.value)}
+        onChange={(e) => onChangeValueRow("colorInt", e.target.value)}
       />
     </Table.Cell>
     <Table.Cell width="2">
       <Input
-        value={ordine.code}
-        onChange={(e) => onChangeValueRow("code", e.target.value)}
+        value={ordine.colorExt}
+        placeholder="#FFFFFF"
+        onChange={(e) => onChangeValueRow("colorExt", e.target.value)}
       />
     </Table.Cell>
     <Table.Cell width="1">

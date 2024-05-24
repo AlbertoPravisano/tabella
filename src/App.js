@@ -15,11 +15,11 @@ import {
 } from "semantic-ui-react";
 import TabellaOrdini from "./TabellaOrdini";
 
-const addEmptyOrder = (key = 1, color = "") => ({
+const addEmptyOrder = (key = 1, colorInt = "", colorExt = "") => ({
   key,
   product: "",
-  color,
-  code: "",
+  colorInt,
+  colorExt,
   quantity: 1,
   note: "",
 });
@@ -36,12 +36,13 @@ const App = () => {
   const onExport = () => {
     const order = dataSource.orders.map(
       (obj) =>
-        [obj.product, obj.color, obj.code, obj.quantity, obj.note].join(";") +
-        "\n"
+        [obj.product, obj.colorInt, obj.colorExt, obj.quantity, obj.note].join(
+          ";"
+        ) + "\n"
     );
     const encodedUri = encodeURI(
-      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore;Codice_articolo;Quantita;Note\n` +
-        order
+      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore_interno;Colore_esterno;Quantita;Note\n` +
+        order.join("")
     );
 
     console.log(encodedUri);
@@ -50,14 +51,21 @@ const App = () => {
 
   const onSendMail = () => console.log("Invia via email");
 
-  const addNewEmail = () =>
-    setDataSource({ ...dataSource, emails: [...dataSource.emails, ""] });
+  // const addNewEmail = () =>
+  //   setDataSource({ ...dataSource, emails: [...dataSource.emails, ""] });
 
   const onAddRow = () => {
     const orders = dataSource.orders;
     setDataSource({
       ...dataSource,
-      orders: [...orders, addEmptyOrder(orders.length + 1, orders[0].color)],
+      orders: [
+        ...orders,
+        addEmptyOrder(
+          orders.length + 1,
+          orders[0].colorInt,
+          orders[0].colorExt
+        ),
+      ],
     });
   };
 
@@ -68,11 +76,11 @@ const App = () => {
     });
   };
 
-  const onChangeEmail = (index, email) => {
-    const emails = dataSource.emails;
-    emails[index] = email;
-    setDataSource({ ...dataSource, emails });
-  };
+  // const onChangeEmail = (index, email) => {
+  //   const emails = dataSource.emails;
+  //   emails[index] = email;
+  //   setDataSource({ ...dataSource, emails });
+  // };
 
   const onChangeValueOrder = (index, key, value) => {
     const orders = dataSource.orders;
@@ -98,40 +106,42 @@ const App = () => {
             <Input
               value={dataSource.name}
               placeholder="Mario Rossi"
+              autoFocus
               onChange={(e) =>
                 setDataSource({ ...dataSource, name: e.target.value })
               }
             />
           </Form.Field>
-          {dataSource.emails.map((email, index) => (
+          {/* {dataSource.emails.map((email, index) => (
             <Form.Field key={index}>
               <label>Email {index + 1}</label>
               <Input
                 value={email}
+                disabled
                 placeholder="mariorossi@example.com"
                 onChange={(e) => onChangeEmail(index, e.target.value)}
               />
             </Form.Field>
-          ))}
+          ))} */}
         </Form.Group>
       </Form>
-      <Button
+      {/* <Button
         icon={<MailOutlined />}
         shape="round"
         style={{ marginTop: "2em" }}
-        disabled={dataSource.emails.length > 2}
+        disabled={true || dataSource.emails.length > 2}
         data-tooltip={
           dataSource.emails.length > 2 ? "Limite email raggiunto" : undefined
         }
         onClick={addNewEmail}
       >
         Aggiungi email
-      </Button>
+      </Button> */}
 
       <Divider horizontal>
         <Header as="h4">
           <Icon name="shopping cart" />
-          Ordine
+          Richiesta
         </Header>
       </Divider>
 
@@ -162,6 +172,8 @@ const App = () => {
         type="dashed"
         icon={<MailOutlined />}
         shape="round"
+        disabled
+        data-tooltip="Prossimamente disponibile"
         style={{ float: "right", marginRight: "1em", marginTop: "2em" }}
         onClick={onSendMail}
       >
