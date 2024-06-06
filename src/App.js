@@ -41,7 +41,7 @@ const App = () => {
         ) + "\n"
     );
     const encodedUri = encodeURI(
-      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nProdotto;Colore_interno;Colore_esterno;Quantita;Note\n` +
+      `data:text/csv;charset=utf-8,Cliente;${dataSource.name}\n\nCodice;Colore_interno;Colore_esterno;Quantita;Note\n` +
         order.join("")
     );
 
